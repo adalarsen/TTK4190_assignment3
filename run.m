@@ -40,8 +40,9 @@ c=0;                % Current on (1)/off (0)
 nc0 = 0;
 nc_max = (85*2*pi)/60;
 
-T=425.31;
-K=1.1476;
+% Header Controller
+T=122.6001;
+K=-0.0594;
 
 omegab = 0.05;
 zeta = 0.8;
@@ -56,13 +57,26 @@ kp = (m+km)*omegan^2-k;
 kd = 0; %2*zeta*omegan*(m+km)-d
 ki = omegan/10*kp; 
 
+% Surge Speed Controller
+T_u=425.31;
+K_u=1.1476;
+
+omegab = 0.05;
+zeta = 1;
+omegan = sqrt(1/(1-2*zeta^2 + sqrt(4*zeta^4-4*zeta^2+2)))*omegab;
+
+m= T_u/K_u;
+d = 1/K_u;
+k = 0;
+km = 0; %optional acceleration feedback
+
 kp_u = (m+km)*omegan^2-k;
 kd_u = 0; %2*zeta*omegan*(m+km)-d
-ki_u = omegan/10*kp; 
+ki_u = omegan/10*kp_u; 
 
 psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
-psi_d.signals.values = zeros(length(psi_d.time),1);
+%psi_d.signals.values = zeros(length(psi_d.time),1);
 r_d = 0*psi_d.time; %0.4*cos(0.004*psi_d.time)*0.004;
 r_d = r_d';
 
