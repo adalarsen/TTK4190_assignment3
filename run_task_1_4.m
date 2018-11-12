@@ -28,19 +28,16 @@ close all;
 
 %%
 tstart=0;           % Sim start time
-tstop=5000;        % Sim stop time
+tstop=10000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
-
-nc_max = (85/60)*2*pi;
+                
 p0=zeros(2,1);      % Initial position (NED)
-v0=[3 0]';       % Initial velocity (body)
-surge_step = [v0(1) 7];
+v0=[6.63 0]';       % Initial velocity (body)
 psi0=0;             % Inital yaw angle
 r0=0;               % Inital yaw rate
 c=0;                % Current on (1)/off (0)
-%dc= 5*pi/180;
 
-%% heading controller parameters
+
 K= -0.0594;
 T= 122.6001;
 
@@ -53,49 +50,23 @@ d = 1/K;
 k = 0;
 km = 0; %optional acceleration feedback
 
-kp_heading = (m+km)*omegan^2-k;
-kd_heading = 0;%2*zeta*omegan*(m+km)-d;
-ki_heading = omegan/10*kp_heading;  
-
-%% surge controller parameters
-K_surge = 1.1476;
-T_surge = 425.3102;
-
-% omegab_surge = 0.05;
-% zeta_surge = 1;
-% omegan_surge = sqrt(1/(1-2*zeta_surge^2 + sqrt(4*zeta_surge^4-4*zeta_surge^2+2)))*omegab_surge;
-% 
-% m_surge = T_surge/K_surge;
-% d_surge = 1/K_surge;
-% k_surge = 0;
-% km_surge = 0; %optional acceleration feedback
-% 
-% kp_surge = (m_surge+km_surge)*omegan_surge^2-k_surge;
-% kd_surge = 0; %2*zeta*omegan*(m+km)-d
-% ki_surge = omegan_surge/10*kp_surge; 
-
-kp_surge = 5;
-kd_surge = 0;
-ki_surge = 0;
-
+kp = (m+km)*omegan^2-k;
+kd = 0; %2*zeta*omegan*(m+km)-d
+ki = omegan/10*kp; 
 
 psi_d.time = tstart:tsamp:tstop';
-psi_d.signals.values = 0*psi_d.time';
-r_d = 0*psi_d.time;
+psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
+r_d = 0.4*cos(0.004*psi_d.time)*0.004;
 r_d = r_d';
 
-u_d.time = tstart:tsamp:tstop';
-u_d.signals.values = 0*u_d.time';
-u_d.signals.values(1:124) = surge_step(1)*ones(124,1)';
-u_d.signals.values(125:(tstop/tsamp + 1)) = surge_step(2)*ones((length(u_d.time)-124),1)';
-sim MSFartoystyring_1_7 % The measurements from the simulink model are automatically written to the workspace.
+sim MSFartoystyring_1_4 % The measurements from the simulink model are automatically written to the workspace.
 %% Plot
 
 figure(1); clf;
 subplot(2,2,1)
 plot(t,psi*180/pi,'b')
 hold on
-plot(psi_d.time,psi_d.signals.values*180/pi,'r--')
+plot(psi_d.time,psi_d.signals.values*180/pi,'r')
 hold on
 plot(t,(psi-psi_d.signals.values)*180/pi,'k')
 hold on
@@ -106,7 +77,7 @@ ylabel('Angle [deg]')
 set(gca,'FontSize',16)
 
 subplot(2,2,2)
-plot(p(:,1),p(:,2),'b')
+plot(p(:,2),p(:,1),'b')
 hold on
 %legend({'$\chi$','$\chi_{ref}$'},'Interpreter','latex','Location','southeast')
 title('Position')
@@ -117,7 +88,7 @@ set(gca,'FontSize',16)
 subplot(2,2,3)
 plot(t,r*180/pi,'b')
 hold on
-plot(t,r_d*180/pi,'r--')
+plot(t,r_d*180/pi,'r')
 hold on
 plot(t,(r-r_d)*180/pi,'k')
 hold on
@@ -127,19 +98,14 @@ ylabel('Angular rate [deg/s]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
 
-figure(2)
+subplot(2,2,4)
 plot(t,v(:,1),'b')
 hold on
-plot(t,u_d.signals.values,'r--')
+plot(t,v(:,2),'r')
 hold on
-plot(t,v(:,2),'b--')
-hold on
-plot(t,nc,'g')
-ylim([0 10])
 
-
-legend({'$u$', '$u_d$','$v$','$n_c$'},'Interpreter','latex')
+legend({'$u$','$v$'},'Interpreter','latex')
 title('Velocity')
-ylabel('Speed [m/s] / Shaft speed [rad/s]')
+ylabel('Aasd [deg]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
