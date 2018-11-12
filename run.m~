@@ -32,14 +32,16 @@ tstop=10000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
                 
 p0=zeros(2,1);      % Initial position (NED)
-v0=[6.63 0]';       % Initial velocity (body)
+v0=[3 0]';       % Initial velocity (body)
 psi0=0;             % Inital yaw angle
 r0=0;               % Inital yaw rate
 c=0;                % Current on (1)/off (0)
 %dc= 5*pi/180;
+nc0 = 0;
+nc_max = (85*2*pi)/60;
 
-K= -0.0594;
-T= 122.6001;
+T=425.31;
+K=1.1476;
 
 omegab = 0.05;
 zeta = 0.8;
@@ -56,10 +58,15 @@ ki = omegan/10*kp;
 
 psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
-r_d = 0.4*cos(0.004*psi_d.time)*0.004;
+psi_d.signals.values = zeros(length(psi_d.time),1);
+r_d = 0*psi_d.time; %0.4*cos(0.004*psi_d.time)*0.004;
 r_d = r_d';
 
-sim MSFartoystyring % The measurements from the simulink model are automatically written to the workspace.
+%nc.time = tstart:tsamp:tstop';
+%nc.signals.values = 7;
+nc = 7;
+
+sim MSFartoystyring1_2 % The measurements from the simulink model are automatically written to the workspace.
 %% Plot
 
 figure(1); clf;
@@ -109,3 +116,18 @@ title('Velocity')
 ylabel('Aasd [deg]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
+
+%figure(5)
+%plot(nc.signals.values,v(:,1))
+%title('Shaft speed to Surge relationship')
+%ylabel('Surge Speed [m/s]')
+%xlabel('Shaft Speed [rad/s}')
+
+f(t) = (t < 1250 & 3) + (
+
+figure(3)
+plot(t,v(:,1),'b');
+hold on
+plot(t(1:1250),3)
+plot(t(1250:end),7)
+hold off
