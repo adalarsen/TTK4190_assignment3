@@ -35,7 +35,7 @@ p0=zeros(2,1);      % Initial position (NED)
 v0=[3 0]';       % Initial velocity (body)
 psi0=0;             % Inital yaw angle
 r0=0;               % Inital yaw rate
-c=0;                % Current on (1)/off (0)
+c=1;                % Current on (1)/off (0)
 %dc= 5*pi/180;
 nc0 = 0;
 nc_max = (85*2*pi)/60;
@@ -62,7 +62,7 @@ T_u=425.31;
 K_u=1.1476;
 
 omegab = 0.05;
-zeta = 1;
+zeta = 0.8;
 omegan = sqrt(1/(1-2*zeta^2 + sqrt(4*zeta^4-4*zeta^2+2)))*omegab;
 
 m= T_u/K_u;
@@ -70,13 +70,13 @@ d = 1/K_u;
 k = 0;
 km = 0; %optional acceleration feedback
 
-kp_u = (m+km)*omegan^2-k;
+kp_u = 5;%(m+km)*omegan^2-k;
 kd_u = 0; %2*zeta*omegan*(m+km)-d
-ki_u = omegan/10*kp_u; 
+ki_u = 0;% omegan/10*kp_u; 
 
 psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
-%psi_d.signals.values = zeros(length(psi_d.time),1);
+psi_d.signals.values = zeros(length(psi_d.time),1);
 r_d = 0*psi_d.time; %0.4*cos(0.004*psi_d.time)*0.004;
 r_d = r_d';
 
@@ -85,58 +85,5 @@ r_d = r_d';
 nc = 7;
 
 sim MSFartoystyring1_2 % The measurements from the simulink model are automatically written to the workspace.
-%% Plot
 
-figure(1); clf;
-subplot(2,2,1)
-plot(t,psi*180/pi,'b')
-hold on
-plot(psi_d.time,psi_d.signals.values*180/pi,'r')
-hold on
-plot(t,(psi-psi_d.signals.values)*180/pi,'k')
-hold on
-legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location','southeast')
-title('Heading (yaw)')
-xlabel('Time [s]')
-ylabel('Angle [deg]')
-set(gca,'FontSize',16)
-
-subplot(2,2,2)
-plot(p(:,1),p(:,2),'b')
-hold on
-%legend({'$\chi$','$\chi_{ref}$'},'Interpreter','latex','Location','southeast')
-title('Position')
-xlabel('East [m]')
-ylabel('North [m]')
-set(gca,'FontSize',16)
-
-subplot(2,2,3)
-plot(t,r*180/pi,'b')
-hold on
-plot(t,r_d*180/pi,'r')
-hold on
-plot(t,(r-r_d)*180/pi,'k')
-hold on
-legend({'$r$','$r_d$','$\tilde{r}$'},'Interpreter','latex')
-title('Yaw rate')
-ylabel('Angular rate [deg/s]')
-xlabel('Time [s]')
-set(gca,'FontSize',16)
-
-subplot(2,2,4)
-plot(t,v(:,1),'b')
-hold on
-plot(t,v(:,2),'r')
-hold on
-
-legend({'$u$','$v$'},'Interpreter','latex')
-title('Velocity')
-ylabel('Aasd [deg]')
-xlabel('Time [s]')
-set(gca,'FontSize',16)
-
-%figure(5)
-%plot(nc.signals.values,v(:,1))
-%title('Shaft speed to Surge relationship')
-%ylabel('Surge Speed [m/s]')
-%xlabel('Shaft Speed [rad/s}')
+plots

@@ -91,21 +91,24 @@ ylim([-32 32])
 
 figure(3); clf;
 subplot(3,1,1)
-plot(t,v(:,1)*180/pi,'b')
+plot(t,v(:,1),'b')
 hold on
 legend({'$u$'},'Interpreter','latex')%,'Location','southeast')
 title('Surge speed')
-ylabel('Angle [deg]')
+ylabel('Speed [m/s]')
 set(gca,'FontSize',16)
 
 subplot(3,1,2)
 yyaxis left
 plot(t,psi*180/pi,'b')
 ylabel('Angle [deg]')
+lim = max(abs(psi*180/pi));
+ylim([-lim lim])
 hold on
 yyaxis right
 plot(t,r*180/pi,'r')
-hold on
+lim = max(abs(r*180/pi));
+ylim([-lim lim])
 legend({'$\psi$','$r$'},'Interpreter','latex')
 title('Heading and yaw rate')
 ylabel('Angular rate [deg/s]')
@@ -117,14 +120,18 @@ plot(t,delta_c*180/pi,'b')
 hold on
 plot(t,ones(1,length(t))*25,'b--')
 plot(t,ones(1,length(t))*-25,'b--')
+lim = max(abs(delta_c*180/pi));
+ylim([-lim lim])
+ylabel('Angle [deg]')
 yyaxis right
 plot(t,n_c*180/pi,'r')
 hold on
 plot(t,ones(1,length(t))*(85*2*180/60),'r--')
 plot(t,ones(1,length(t))*0,'r--')
-legend({'$\delta_c$','Saturation limits'},'Interpreter','latex')
+lim = max(abs(n_c*180/pi));
+ylim([-lim lim])
+legend({'$\delta_c$','$n_c$'},'Interpreter','latex')
 title('Rudder input')
 ylabel('Angle [deg]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
-ylim([-32 32])
