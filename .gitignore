@@ -1,4 +1,5 @@
 slprj/
 *.m~
-*.slx.autosave
+*.autosave
 *.slxc
+*.asv
