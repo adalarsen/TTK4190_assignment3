@@ -54,7 +54,7 @@ figure(2); clf;
 subplot(3,1,1)
 plot(t,psi*180/pi,'b')
 hold on
-plot(psi_d.time,psi_d*180/pi,'r')
+plot(t,psi_d*180/pi,'r')
 hold on
 plot(t,(psi-psi_d)*180/pi,'k')
 hold on
@@ -76,7 +76,7 @@ ylabel('Angular rate [deg/s]')
 set(gca,'FontSize',16)
 
 subplot(3,1,3)
-plot(t,delta_c*180/pi,'b')
+plot(t,dc*180/pi,'b')
 hold on
 plot(t,ones(1,length(t))*25,'k--')
 plot(t,ones(1,length(t))*-25,'k--')
@@ -120,7 +120,7 @@ set(gca,'FontSize',16)
 
 subplot(3,1,3)
 yyaxis left
-plot(t,dc,'b')
+plot(t,dc*180/pi,'b')
 hold on
 plot(t,ones(1,length(t))*25,'b--','HandleVisibility','off')
 plot(t,ones(1,length(t))*-25,'b--','HandleVisibility','off')

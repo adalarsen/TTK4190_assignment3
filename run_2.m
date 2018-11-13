@@ -31,6 +31,7 @@ tstart=0;           % Sim start time
 tstop=5000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
 
+dc_max = 25*(pi/180);
 nc_max = (85/60)*2*pi;
 p0=[1000 700]';      % Initial position (NED)
 v0=[6.63 0]';       % Initial velocity (body)
