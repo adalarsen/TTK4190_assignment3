@@ -93,10 +93,14 @@ figure(3); clf;
 subplot(3,1,1)
 plot(t,v(:,1),'b')
 hold on
-legend({'$u$'},'Interpreter','latex')%,'Location','southeast')
+plot(t,u_d,'b--')
+hold on
+plot(t,v(:,1)-u_d,'k')
+legend({'$u$', '$u_d$', '$\tilde{u}$'},'Interpreter','latex')%,'Location','southeast')
 title('Surge speed')
 ylabel('Speed [m/s]')
 set(gca,'FontSize',16)
+ylim([-5 10])
 
 subplot(3,1,2)
 yyaxis left
@@ -116,22 +120,21 @@ set(gca,'FontSize',16)
 
 subplot(3,1,3)
 yyaxis left
-plot(t,delta_c*180/pi,'b')
+plot(t,dc,'b')
 hold on
-plot(t,ones(1,length(t))*25,'b--')
-plot(t,ones(1,length(t))*-25,'b--')
-lim = max(abs(delta_c*180/pi));
-ylim([-lim lim])
+plot(t,ones(1,length(t))*25,'b--','HandleVisibility','off')
+plot(t,ones(1,length(t))*-25,'b--','HandleVisibility','off')
+ylim([-26 26])
 ylabel('Angle [deg]')
 yyaxis right
-plot(t,n_c*180/pi,'r')
+plot(t,nc,'r')
 hold on
-plot(t,ones(1,length(t))*(85*2*180/60),'r--')
-plot(t,ones(1,length(t))*0,'r--')
-lim = max(abs(n_c*180/pi));
+plot(t,ones(1,length(t))*nc_max,'r--','HandleVisibility','off')
+plot(t,ones(1,length(t))*0,'r--','HandleVisibility','off')
+lim = nc_max +1;
 ylim([-lim lim])
 legend({'$\delta_c$','$n_c$'},'Interpreter','latex')
 title('Rudder input')
-ylabel('Angle [deg]')
+ylabel('[rad/s]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)

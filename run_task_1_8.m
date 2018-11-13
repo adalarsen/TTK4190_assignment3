@@ -37,7 +37,7 @@ v0=[3 0]';       % Initial velocity (body)
 surge_step = [v0(1) 7];
 psi0=0;             % Inital yaw angle
 r0=0;               % Inital yaw rate
-c=0;                % Current on (1)/off (0)
+c=1;                % Current on (1)/off (0)
 
 %% heading controller parameters
 K= -0.0594;
@@ -53,7 +53,7 @@ k = 0;
 km = 0; %optional acceleration feedback
 
 kp_heading = (m+km)*omegan^2-k;
-kd_heading = 0;%2*zeta*omegan*(m+km)-d;
+kd_heading = 2*zeta*omegan*(m+km)-d;
 ki_heading = omegan/10*kp_heading;  
 
 %% surge controller parameters
@@ -80,20 +80,11 @@ ki_surge = 0;
 
 psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 0*psi_d.time';
-r_d = 0*psi_d.time;
-r_d = r_d';
-
-% psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
-% r_d = 0.4*cos(0.004*psi_d.time)*0.004;
-% r_d = r_d';
 
 u_d.time = tstart:tsamp:tstop';
 u_d.signals.values = 0*u_d.time';
 u_d.signals.values(1:124) = surge_step(1)*ones(124,1)';
 u_d.signals.values(125:(tstop/tsamp + 1)) = surge_step(2)*ones((length(u_d.time)-124),1)';
-
-
-
 
 u_d_plot = u_d.signals.values;
 
@@ -101,58 +92,56 @@ u_d_plot = u_d.signals.values;
 
 sim MSFartoystyring_1_8 % The measurements from the simulink model are automatically written to the workspace.
 %% Plot
-%u_d_plot = u_d;
 
-
-figure(1); clf;
-subplot(2,2,1)
-plot(t,psi*180/pi,'b')
-hold on
-plot(psi_d.time,psi_d.signals.values*180/pi,'r--')
-hold on
-plot(t,(psi-psi_d.signals.values)*180/pi,'k')
-hold on
-legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location','southeast')
-title('Heading (yaw)')
-xlabel('Time [s]')
-ylabel('Angle [deg]')
-set(gca,'FontSize',16)
-
-subplot(2,2,2)
-plot(p(:,2),p(:,1),'b')
-hold on
-%legend({'$\chi$','$\chi_{ref}$'},'Interpreter','latex','Location','southeast')
-title('Position')
-xlabel('East [m]')
-ylabel('North [m]')
-set(gca,'FontSize',16)
-
-subplot(2,2,3)
-plot(t,r*180/pi,'b')
-hold on
-plot(t,r_d*180/pi,'r--')
-hold on
-plot(t,(r-r_d)*180/pi,'k')
-hold on
-legend({'$r$','$r_d$','$\tilde{r}$'},'Interpreter','latex')
-title('Yaw rate')
-ylabel('Angular rate [deg/s]')
-xlabel('Time [s]')
-set(gca,'FontSize',16)
-
-figure(2)
-plot(t,v(:,1),'b')
-hold on
-plot(t,u_d_plot,'r--')
-hold on
-plot(t,v(:,2),'b--')
-hold on
-plot(t,nc,'g')
-ylim([0 10])
-
-
-legend({'$u$', '$u_d$','$v$','$n_c$'},'Interpreter','latex')
-title('Velocity')
-ylabel('Speed [m/s] / Shaft speed [rad/s]')
-xlabel('Time [s]')
-set(gca,'FontSize',16)
+% figure(1); clf;
+% subplot(2,2,1)
+% plot(t,psi*180/pi,'b')
+% hold on
+% plot(psi_d.time,psi_d.signals.values*180/pi,'r--')
+% hold on
+% plot(t,(psi-psi_d.signals.values)*180/pi,'k')
+% hold on
+% legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location','southeast')
+% title('Heading (yaw)')
+% xlabel('Time [s]')
+% ylabel('Angle [deg]')
+% set(gca,'FontSize',16)
+% 
+% subplot(2,2,2)
+% plot(p(:,2),p(:,1),'b')
+% hold on
+% %legend({'$\chi$','$\chi_{ref}$'},'Interpreter','latex','Location','southeast')
+% title('Position')
+% xlabel('East [m]')
+% ylabel('North [m]')
+% set(gca,'FontSize',16)
+% 
+% subplot(2,2,3)
+% plot(t,r*180/pi,'b')
+% hold on
+% plot(t,r_d*180/pi,'r--')
+% hold on
+% plot(t,(r-r_d)*180/pi,'k')
+% hold on
+% legend({'$r$','$r_d$','$\tilde{r}$'},'Interpreter','latex')
+% title('Yaw rate')
+% ylabel('Angular rate [deg/s]')
+% xlabel('Time [s]')
+% set(gca,'FontSize',16)
+% 
+% figure(2)
+% plot(t,v(:,1),'b')
+% hold on
+% plot(t,u_d_plot,'r--')
+% hold on
+% plot(t,v(:,2),'b--')
+% hold on
+% plot(t,nc,'g')
+% ylim([0 10])
+% 
+% 
+% legend({'$u$', '$u_d$','$v$','$n_c$'},'Interpreter','latex')
+% title('Velocity')
+% ylabel('Speed [m/s] / Shaft speed [rad/s]')
+% xlabel('Time [s]')
+% set(gca,'FontSize',16)
