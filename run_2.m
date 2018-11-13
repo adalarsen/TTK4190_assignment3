@@ -30,7 +30,8 @@ close all;
 tstart=0;           % Sim start time
 tstop=5000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
-                
+
+nc_max = (85/60)*2*pi;
 p0=[1000 700]';      % Initial position (NED)
 v0=[6.63 0]';       % Initial velocity (body)
 psi0=0*60*pi/180;             % Inital yaw angle
@@ -38,6 +39,7 @@ r0=0;               % Inital yaw rate
 c=1;                % Current on (1)/off (0)
 %dc= 5*pi/180;
 
+%% heading controller parameters
 K= -0.0594;
 T= 122.6001;
 
@@ -51,19 +53,33 @@ k = 0;
 km = 0; %optional acceleration feedback
 
 kp_heading = (m+km)*omegan^2-k;
-kd_heading = 0; %2*zeta*omegan*(m+km)-d
-ki_heading = omegan/10*kp_heading; 
+kd_heading = 2*zeta*omegan*(m+km)-d;
+ki_heading = omegan/10*kp_heading;  
 
+%% surge controller parameters
+K_surge = 1;
+T_surge = 560.4;
 
-kp_surge = 100;%(m+km)*omegan^2-k;
-kd_surge = 0; %2*zeta*omegan*(m+km)-d
-ki_surge = 0;%omegan/10*kp; 
+omegab_surge = 0.25;
+zeta_surge = 1.2;
+omegan_surge = sqrt(1/(1-2*zeta_surge^2 + sqrt(4*zeta_surge^4-4*zeta_surge^2+2)))*omegab_surge;
 
+m_surge = T_surge/K_surge;
+d_surge = 1/K_surge;
+k_surge = 0;
+km_surge = 0; %optional acceleration feedback
 
+kp_surge = (m_surge+km_surge)*omegan_surge^2-k_surge;
+kd_surge = 0; %2*zeta*omegan*(m+km)-d;
+ki_surge = omegan_surge/10*kp_surge; 
+
+kp_surge = 100;
+kd_surge = 0;
+ki_surge = 0;
+
+%% Sim
 psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 60+0*sin(0.004*psi_d.time)';
-r_d = 0.4*cos(0.004*psi_d.time)*0.004;
-r_d = r_d';
 
 load('WP.mat')
 delta = 2*304.8;

@@ -4,9 +4,9 @@ figure(1); clf;
 subplot(2,2,1)
 plot(t,psi*180/pi,'b')
 hold on
-plot(psi_d.time,psi_d.signals.values*180/pi,'r')
+plot(psi_d.time,psi_d*180/pi,'r')
 hold on
-plot(t,(psi-psi_d.signals.values)*180/pi,'k')
+plot(t,(psi-psi_d)*180/pi,'k')
 hold on
 legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location','southeast')
 title('Heading (yaw)')
@@ -54,9 +54,9 @@ figure(2); clf;
 subplot(3,1,1)
 plot(t,psi*180/pi,'b')
 hold on
-plot(psi_d.time,psi_d.signals.values*180/pi,'r')
+plot(psi_d.time,psi_d*180/pi,'r')
 hold on
-plot(t,(psi-psi_d.signals.values)*180/pi,'k')
+plot(t,(psi-psi_d)*180/pi,'k')
 hold on
 legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location','southeast')
 title('Heading (yaw)')
