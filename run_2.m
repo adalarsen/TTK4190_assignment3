@@ -28,14 +28,14 @@ close all;
 
 %%
 tstart=0;           % Sim start time
-tstop=5000;        % Sim stop time
+tstop=15000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
                 
 p0=[1000 700]';      % Initial position (NED)
 v0=[6.63 0]';       % Initial velocity (body)
-psi0=0*60*pi/180;             % Inital yaw angle
+psi0=60*pi/180;             % Inital yaw angle
 r0=0;               % Inital yaw rate
-c=1;                % Current on (1)/off (0)
+c=0;                % Current on (1)/off (0)
 %dc= 5*pi/180;
 
 K= -0.0594;
@@ -66,7 +66,6 @@ r_d = 0.4*cos(0.004*psi_d.time)*0.004;
 r_d = r_d';
 
 load('WP.mat')
-delta = 2*304.8;
 
 sim MSFartoystyring_2 % The measurements from the simulink model are automatically written to the workspace.
 
