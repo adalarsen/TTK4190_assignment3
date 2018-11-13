@@ -37,8 +37,7 @@ v0=[3 0]';       % Initial velocity (body)
 surge_step = [v0(1) 7];
 psi0=0;             % Inital yaw angle
 r0=0;               % Inital yaw rate
-c=1;                % Current on (1)/off (0)
-%dc= 5*pi/180;
+c=0;                % Current on (1)/off (0)
 
 %% heading controller parameters
 K= -0.0594;
@@ -58,10 +57,10 @@ kd_heading = 0;%2*zeta*omegan*(m+km)-d;
 ki_heading = omegan/10*kp_heading;  
 
 %% surge controller parameters
-K_surge = 1.3783;
-T_surge = 560.4304;
+K_surge = 1;
+T_surge = 560.4;
 
-omegab_surge = 0.05;
+omegab_surge = 0.25;
 zeta_surge = 1.2;
 omegan_surge = sqrt(1/(1-2*zeta_surge^2 + sqrt(4*zeta_surge^4-4*zeta_surge^2+2)))*omegab_surge;
 
@@ -71,7 +70,7 @@ k_surge = 0;
 km_surge = 0; %optional acceleration feedback
 
 kp_surge = (m_surge+km_surge)*omegan_surge^2-k_surge;
-kd_surge = 0; %2*zeta*omegan*(m+km)-d
+kd_surge = 0; %2*zeta*omegan*(m+km)-d;
 ki_surge = omegan_surge/10*kp_surge; 
 
 kp_surge = 100;
@@ -84,18 +83,25 @@ psi_d.signals.values = 0*psi_d.time';
 r_d = 0*psi_d.time;
 r_d = r_d';
 
-% u_d.time = tstart:tsamp:tstop';
-% u_d.signals.values = 0*u_d.time';
-% u_d.signals.values(1:124) = surge_step(1)*ones(124,1)';
-% u_d.signals.values(125:(tstop/tsamp + 1)) = surge_step(2)*ones((length(u_d.time)-124),1)';
-% 
-% u_d_plot = u_d.signals.values;
+% psi_d.signals.values = 0.4*sin(0.004*psi_d.time)';
+% r_d = 0.4*cos(0.004*psi_d.time)*0.004;
+% r_d = r_d';
+
+u_d.time = tstart:tsamp:tstop';
+u_d.signals.values = 0*u_d.time';
+u_d.signals.values(1:124) = surge_step(1)*ones(124,1)';
+u_d.signals.values(125:(tstop/tsamp + 1)) = surge_step(2)*ones((length(u_d.time)-124),1)';
+
+
+
+
+u_d_plot = u_d.signals.values;
 
 
 
 sim MSFartoystyring_1_8 % The measurements from the simulink model are automatically written to the workspace.
 %% Plot
-u_d_plot = u_d;
+%u_d_plot = u_d;
 
 
 figure(1); clf;
