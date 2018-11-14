@@ -50,7 +50,7 @@ set(gca,'FontSize',16)
 
 %% Plot 1.4
 
-figure(2); clf;
+figure(4); clf;
 subplot(3,1,1)
 plot(t,psi*180/pi,'b')
 hold on
@@ -62,6 +62,7 @@ legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location'
 title('Heading (yaw)')
 ylabel('Angle [deg]')
 set(gca,'FontSize',16)
+ylim([-360 360])
 
 subplot(3,1,2)
 plot(t,r*180/pi,'b')
@@ -138,3 +139,24 @@ title('Rudder input')
 ylabel('[rad/s]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
+
+%% Plot 2.4
+
+figure(24); clf;
+plot((mod(chi+pi,2*pi)-pi)*180/pi,'b')
+hold on
+plot((mod(psi+pi,2*pi)-pi)*180/pi,'k')
+hold on
+plot((mod(chi_d+pi,2*pi)-pi)*180/pi,'r')
+hold on
+plot(beta*180/pi,'g')
+plot(-180*ones(620,1),'k--')
+plot(180*ones(620,1),'k--')
+plot(0*ones(620,1),'k--')
+
+legend({'$\chi$','$\psi$','$\chi_d$','$\beta$'},'Interpreter','latex')%,'Location','southeast')
+title('Course, heading, desired course and crab angle')
+ylabel('Angle [deg]')
+set(gca,'FontSize',16)
+ylim([-200 200])
+xlim([0 620])
