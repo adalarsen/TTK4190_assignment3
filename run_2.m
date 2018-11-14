@@ -29,14 +29,14 @@ close all;
 
 %%
 tstart=0;           % Sim start time
-tstop=7200;        % Sim stop time
+tstop=10000;        % Sim stop time
 tsamp=10;           % Sampling time for how often states are stored. (NOT ODE solver time step)
 
 dc_max = 25*(pi/180);
 nc_max = (85/60)*2*pi;
 p0=[1000 700]';      % Initial position (NED)
 v0=[6.63 0]';       % Initial velocity (body)
-psi0=60*pi/180;             % Inital yaw angle
+psi0=-140*pi/180; %60            % Inital yaw angle
 r0=0;               % Inital yaw rate
 c=1;                % Current on (1)/off (0)
 %dc= 5*pi/180;
@@ -84,7 +84,18 @@ psi_d.time = tstart:tsamp:tstop';
 psi_d.signals.values = 60+0*sin(0.004*psi_d.time)';
 
 load('WP.mat')
-delta = 2*304.8;
+
+% Target
+U_t = 3; 
+chi_t = atan2(WP(2,2)-WP(2,1),WP(1,2)-WP(1,1));
+
+kappa = nc_max - U_t;
+
+delta_e = 3*304.8; % Look-ahead distance
+delta_s = 3*304.8;
+e_d = 2*304.8;
+s_d = 1*304.8;
+
 
 sim MSFartoystyring_2_CAC % The measurements from the simulink model are automatically written to the workspace.
 
@@ -98,11 +109,21 @@ track = 1;  % 1 for task 2.7 otherwise 0
 pathplotter(p(:,1),p(:,2),psi,tsamp,dec,tstart,tstop,track,WP);
 
 % figure(1); hold on
-% scatter(y_los, x_los)
+% scatter(p_t(:,2), p_t(:,1))
 
 %% 2.4
 
 beta = asin(v(:,2)./sqrt(v(:,1).^2+v(:,2).^2));
 
 chi = beta + psi;
+
+%% 2.7
+
+% figure(27); clf;
+% plot(p_t(:,2),p_t(:,1))
+% title('Position of KNM Helge Ingstad')
+% xlabel('North [m]')
+% ylabel('East [m]')
+% xlim([-2500 1100])
+% ylim([-22000 8000])
 
