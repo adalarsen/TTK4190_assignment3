@@ -1,4 +1,3 @@
-
 clear all;
 close all;
 %% Information 
@@ -36,7 +35,7 @@ dc_max = 25*(pi/180);
 nc_max = (85/60)*2*pi;
 p0=[1000 700]';      % Initial position (NED)
 v0=[6.63 0]';       % Initial velocity (body)
-psi0=-140*pi/180; %60            % Inital yaw angle
+psi0=60*pi/180; %60            % Inital yaw angle
 r0=0;               % Inital yaw rate
 c=1;                % Current on (1)/off (0)
 %dc= 5*pi/180;
@@ -46,7 +45,7 @@ K= -0.0594;
 T= 122.6001;
 
 omegab = 0.05;
-zeta = 0.8;
+zeta = 0.6;
 omegan = sqrt(1/(1-2*zeta^2 + sqrt(4*zeta^4-4*zeta^2+2)))*omegab;
 
 m= T/K;
@@ -76,8 +75,8 @@ kd_surge = 0; %2*zeta*omegan*(m+km)-d;
 ki_surge = omegan_surge/10*kp_surge; 
 
 kp_surge = 100;
-kd_surge = 0;
-ki_surge = 0;
+kd_surge = 20;
+ki_surge = 0.1;
 
 %% Sim
 psi_d.time = tstart:tsamp:tstop';
@@ -97,19 +96,19 @@ e_d = 2*304.8;
 s_d = 1*304.8;
 
 
-sim MSFartoystyring_2_CAC % The measurements from the simulink model are automatically written to the workspace.
+sim test % The measurements from the simulink model are automatically written to the workspace.
 
 
 %% Path plotting
 
-
 dec = 20;   % Factor for reducing the amount of data in the plot
-track = 1;  % 1 for task 2.7 otherwise 0
+track = 0;  % 1 for task 2.7 otherwise 0
 %pathplotter(x, y,  psi, tsamp, dec, tstart, tstop, track, WP)
 pathplotter(p(:,1),p(:,2),psi,tsamp,dec,tstart,tstop,track,WP);
 
-% figure(1); hold on
-% scatter(p_t(:,2), p_t(:,1))
+figure(1); hold on
+%scatter(p_t_out(:,2), p_t_out(:,1))
+scatter(y_los, x_los)
 
 %% 2.4
 
