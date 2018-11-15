@@ -130,19 +130,19 @@ sim MSFartoystyring_1_8 % The measurements from the simulink model are automatic
 % xlabel('Time [s]')
 % set(gca,'FontSize',16)
 % 
-% figure(2)
-% plot(t,v(:,1),'b')
-% hold on
-% plot(t,u_d_plot,'r--')
-% hold on
-% plot(t,v(:,2),'b--')
-% hold on
-% plot(t,nc,'g')
-% ylim([0 10])
-% 
-% 
-% legend({'$u$', '$u_d$','$v$','$n_c$'},'Interpreter','latex')
-% title('Velocity')
-% ylabel('Speed [m/s] / Shaft speed [rad/s]')
-% xlabel('Time [s]')
-% set(gca,'FontSize',16)
+figure(2)
+plot(t,v(:,1),'b')
+hold on
+plot(t,u_d_plot,'r--')
+hold on
+plot(t,v(:,2),'b--')
+hold on
+plot(t,nc,'g')
+ylim([0 10])
+
+
+legend({'$u$', '$u_d$','$v$','$n_c$'},'Interpreter','latex')
+title('Velocity')
+ylabel('Speed [m/s] / Shaft speed [rad/s]')
+xlabel('Time [s]')
+set(gca,'FontSize',16)

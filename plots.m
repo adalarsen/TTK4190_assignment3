@@ -135,7 +135,7 @@ plot(t,ones(1,length(t))*0,'r--','HandleVisibility','off')
 lim = nc_max +1;
 ylim([-lim lim])
 legend({'$\delta_c$','$n_c$'},'Interpreter','latex')
-title('Rudder input')
+title('Control input')
 ylabel('[rad/s]')
 xlabel('Time [s]')
 set(gca,'FontSize',16)
