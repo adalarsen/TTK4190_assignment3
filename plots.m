@@ -62,7 +62,7 @@ legend({'$\psi$','$\psi_d$','$\tilde{\psi}$'},'Interpreter','latex')%,'Location'
 title('Heading (yaw)')
 ylabel('Angle [deg]')
 set(gca,'FontSize',16)
-ylim([-360 360])
+ylim([-30 30])
 
 subplot(3,1,2)
 plot(t,r*180/pi,'b')
@@ -94,10 +94,10 @@ figure(3); clf;
 subplot(3,1,1)
 plot(t,v(:,1),'b')
 hold on
-plot(t,u_d,'b--')
+plot(t,u_r,'b--')
 hold on
 plot(t,v(:,1)-u_d,'k')
-legend({'$u$', '$u_d$', '$\tilde{u}$'},'Interpreter','latex')%,'Location','southeast')
+legend({'$u$', '$u_r$', '$\tilde{u}$'},'Interpreter','latex')%,'Location','southeast')
 title('Surge speed')
 ylabel('Speed [m/s]')
 set(gca,'FontSize',16)
@@ -128,7 +128,7 @@ plot(t,ones(1,length(t))*-25,'b--','HandleVisibility','off')
 ylim([-26 26])
 ylabel('Angle [deg]')
 yyaxis right
-plot(t,nc,'r')
+plot(t,nc_sat,'r')
 hold on
 plot(t,ones(1,length(t))*nc_max,'r--','HandleVisibility','off')
 plot(t,ones(1,length(t))*0,'r--','HandleVisibility','off')
